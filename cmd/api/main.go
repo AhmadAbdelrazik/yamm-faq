@@ -1,14 +1,22 @@
 package main
 
 import (
+	"log"
 	"log/slog"
 	"os"
 
 	"github.com/AhmadAbdelrazik/yamm_faq/internal/controllers"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	// load .env
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("failed to load .env file")
+		os.Exit(1)
+	}
+
 	setupSlog()
 
 	controller := controllers.New()
