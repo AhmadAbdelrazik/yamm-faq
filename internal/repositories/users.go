@@ -13,13 +13,15 @@ type UserRepository struct {
 	db *sql.DB
 }
 
+// Create creates a new user with no regard of the user type. For merchants you
+// should use CreateMerchant instead
 func (r *UserRepository) Create(user *models.User) error {
 	query := `
 	INSERT INTO users(email, password, role)
 	VALUES($1, $2, $3)
 	RETURNING id`
 
-	args := []any{user.Email, user.Password.Hash}
+	args := []any{user.Email, user.Password.Hash, user.Role}
 	if err := r.db.QueryRow(query, args...).Scan(&user.ID); err != nil {
 		switch {
 		case strings.Contains(err.Error(), "users_email_key"):
@@ -27,6 +29,41 @@ func (r *UserRepository) Create(user *models.User) error {
 		default:
 			return err
 		}
+	}
+
+	return nil
+}
+
+// Create creates a new merchant and creates a relative store for the merchant.
+func (r *UserRepository) CreateMerchant(merchant *models.User, store *models.Store) error {
+	tx, err := r.db.Begin()
+	if err != nil {
+		return err
+	}
+	query := `
+	INSERT INTO users(email, password, role)
+	VALUES($1, $2, 'merchant')
+	RETURNING id`
+	args := []any{merchant.Email, merchant.Password.Hash}
+
+	if err := tx.QueryRow(query, args...).Scan(&merchant.ID); err != nil {
+		tx.Rollback()
+		switch {
+		case strings.Contains(err.Error(), "users_email_key"):
+			return fmt.Errorf("%w: user with this email already exists", ErrDuplicate)
+		default:
+			return err
+		}
+	}
+
+	store.MerchantID = merchant.ID
+
+	query = `INSERT INTO stores(merchant_id, name) VALUES ($1, $2) RETURNING id`
+	args = []any{store.Name, store.MerchantID}
+
+	if err := tx.QueryRow(query, args...).Scan(&store.ID); err != nil {
+		tx.Rollback()
+		return err
 	}
 
 	return nil
