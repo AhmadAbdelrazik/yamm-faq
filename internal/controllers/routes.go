@@ -10,6 +10,11 @@ import (
 func (c *Controller) Routes(r *gin.Engine) {
 	api := r.Group("/api/v1")
 
+	// users
+	api.POST("/signup/customer", c.signupCustomerHandler)
+	api.POST("/signup/merchant", c.signupMerchantHandler)
+	api.POST("/login", c.loginHandler)
+
 	api.GET("/health", c.healthCheckHandler)
 }
 
