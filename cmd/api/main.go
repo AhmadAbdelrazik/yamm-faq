@@ -6,6 +6,9 @@ import (
 	"os"
 
 	"github.com/AhmadAbdelrazik/yamm_faq/internal/controllers"
+	"github.com/AhmadAbdelrazik/yamm_faq/internal/repositories"
+	"github.com/AhmadAbdelrazik/yamm_faq/internal/services"
+	"github.com/AhmadAbdelrazik/yamm_faq/pkg/jwt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -19,7 +22,16 @@ func main() {
 
 	setupSlog()
 
-	controller := controllers.New()
+	repos, err := repositories.New(os.Getenv("DB_DSN"))
+	if err != nil {
+		slog.Error(err.Error())
+		os.Exit(1)
+	}
+
+	jwtService := jwt.New(os.Getenv("JWT_KEY"))
+	services := services.New(repos)
+
+	controller := controllers.New(services, jwtService)
 
 	r := gin.Default()
 

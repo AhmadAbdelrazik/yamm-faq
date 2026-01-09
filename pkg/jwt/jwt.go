@@ -12,6 +12,14 @@ type JwtService struct {
 	key []byte
 }
 
+// New creates a new instance of JWT Service. JWT Service is used for
+// generating session tokens for authentication.
+func New(key string) *JwtService {
+	return &JwtService{
+		key: []byte(key),
+	}
+}
+
 type UserClaims struct {
 	UserType string `json:"userType"`
 	jwt.RegisteredClaims
