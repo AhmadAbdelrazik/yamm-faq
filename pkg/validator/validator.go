@@ -1,6 +1,11 @@
 package validator
 
-import "regexp"
+import (
+	"errors"
+	"fmt"
+	"regexp"
+	"strings"
+)
 
 var (
 	EmailRX    = regexp.MustCompile(`^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$`)
@@ -38,4 +43,17 @@ func (v *Validator) Check(condition bool, key, value string) {
 
 func (v *Validator) Valid() bool {
 	return len(v.Errors) == 0
+}
+
+func (v *Validator) Err() error {
+	if v.Valid() {
+		return nil
+	}
+
+	var errorString strings.Builder
+	for k, v := range v.Errors {
+		fmt.Fprintf(&errorString, "%q:%q ", k, v)
+	}
+
+	return errors.New(errorString.String())
 }
