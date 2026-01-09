@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+var ErrInvalid = errors.New("invalid validation")
+
 var (
 	EmailRX    = regexp.MustCompile(`^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$`)
 	LowerRX    = regexp.MustCompile(`[a-z]`)
@@ -55,5 +57,5 @@ func (v *Validator) Err() error {
 		fmt.Fprintf(&errorString, "%q:%q ", k, v)
 	}
 
-	return errors.New(errorString.String())
+	return fmt.Errorf("%w: %v", ErrInvalid, errorString.String())
 }
