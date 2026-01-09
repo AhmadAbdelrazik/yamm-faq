@@ -46,3 +46,52 @@ business logic related to entities themselves. In a domain driven design
 codebase, the domain would have been more complex with root aggregates. However
 For the sake of simplicity the models would only represents the main entities
 in our system
+
+# Day 2: Authentication and Authorization
+
+## Users
+
+In our app, users have different types: customers, merchants, and admins.
+
+Each one has to be treated differently at sign up.
+
+- Customers: Customers are the simplest of three. It requires no permissions,
+  and there is no additional tasks required rather than adding the new user.
+
+- merchants: There are no permissions needed for merchants, however we should
+  also add a store for the merchant. This had an implication on how we design the
+  services for each layer.
+
+- admins: Registering an admin can only be done by an existing admin. That's
+  why we have seeded an admin in the migrations.
+
+The difference between the creation of each user type have resulted in
+separation between them in both the API layer and service layer, while being
+united in the models layer with the User model.
+
+### Unit of Work
+
+The merchant users raises a question on the repository layer. Should the user
+repository only deal with the user table. This means the creation would happen
+on the user repository and the creation of store is in the store repository.
+However this raises a problem in case of failures, what will happen if the
+merchant user has been created while the store failed for any reason such as
+network failures?
+
+One answer is to use the Unit of Work, which mean passing transactions to the
+repositories and committing transactions at the end.this however might add
+unnecessary complexity for a small scale application like this.
+
+So I have chosen to have a method in the user repository that starts a
+transaction inside and add both a merchant and store. This is also closer to
+the ideas of Domain Driven Design where there should be a root aggregate
+entity, where entities attached to it can be manipulated by its repository.
+
+## Session Management
+
+This application uses JWT as the main session management option. Other options
+might be using of stateful tokens. While I might prefer stateful tokens because
+it provide me more control over the sessions since I can easily delete them
+from my caching system, it will require me to setup a caching system like Redis
+or implement my own simple cache (which I implemented in my Last Project
+available on my GitHub called Showtime).
