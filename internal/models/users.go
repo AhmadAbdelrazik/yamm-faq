@@ -30,7 +30,7 @@ func (u *User) Validate(v *validator.Validator) {
 
 type Password struct {
 	password *string
-	hash     []byte
+	Hash     []byte
 }
 
 func NewPassword(password string) (*Password, error) {
@@ -41,7 +41,7 @@ func NewPassword(password string) (*Password, error) {
 
 	return &Password{
 		password: &password,
-		hash:     hash,
+		Hash:     hash,
 	}, nil
 }
 
@@ -78,5 +78,5 @@ func (i *Password) Validate(v *validator.Validator) {
 }
 
 func (p *Password) ComparePassword(password string) bool {
-	return bcrypt.CompareHashAndPassword(p.hash, []byte(password)) == nil
+	return bcrypt.CompareHashAndPassword(p.Hash, []byte(password)) == nil
 }
