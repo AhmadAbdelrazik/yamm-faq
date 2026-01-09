@@ -17,24 +17,18 @@ type UserService struct {
 	repos *repositories.Repositories
 }
 
-// Signup used for creating new users. note that the users can only be
-// customers or merchants. for creating admins use SignupAdmin.
-func (s *UserService) Signup(input SignupInput) (*models.User, error) {
+// SignupCustomer creates a new customer
+func (s *UserService) SignupCustomer(input SignupCustomerInput) (*models.User, error) {
 	pass, _ := models.NewPassword(input.Password)
 
 	user := &models.User{
 		Email:    input.Email,
-		Role:     input.Role,
 		Password: pass,
+		Role:     "customer",
 	}
 
 	// validate that user is not an admin
 	v := validator.New()
-	if user.Role != "customer" && user.Role != "merchant" {
-		v.AddError("role", "role must be (cutomer or merchant)")
-		return nil, v.Err()
-	}
-
 	if user.Validate(v); !v.Valid() {
 		return nil, v.Err()
 	}
@@ -51,8 +45,42 @@ func (s *UserService) Signup(input SignupInput) (*models.User, error) {
 	return user, nil
 }
 
-// SignupAdmin creates new users from any type including admins. note that the
-// request must be sent from an admin user to be valid.
+// SignupMerchant creates a new merchant
+func (s *UserService) SignupMerchant(input SignupMerchantInput) (*models.User, *models.Store, error) {
+	pass, _ := models.NewPassword(input.Password)
+
+	user := &models.User{
+		Email:    input.Email,
+		Password: pass,
+		Role:     "merchant",
+	}
+
+	v := validator.New()
+	if user.Validate(v); !v.Valid() {
+		return nil, nil, v.Err()
+	}
+
+	store := &models.Store{
+		Name: input.StoreName,
+	}
+
+	if store.Validate(v); !v.Valid() {
+		return nil, nil, v.Err()
+	}
+
+	if err := s.repos.Users.CreateMerchant(user, store); err != nil {
+		switch {
+		case errors.Is(err, repositories.ErrDuplicate):
+			return nil, nil, ErrUserAlreadyExists
+		default:
+			return nil, nil, fmt.Errorf("user signup failed: %w", err)
+		}
+	}
+
+	return user, store, nil
+}
+
+// SignupAdmin Allows existing admin to create a new user admin.
 func (s *UserService) SignupAdmin(input SignupAdminInput) (*models.User, error) {
 	if input.Admin.Role != "admin" {
 		return nil, ErrUnauthorized
@@ -62,8 +90,8 @@ func (s *UserService) SignupAdmin(input SignupAdminInput) (*models.User, error) 
 
 	user := &models.User{
 		Email:    input.Email,
-		Role:     input.Role,
 		Password: pass,
+		Role:     "admin",
 	}
 
 	v := validator.New()
@@ -115,17 +143,21 @@ func (s *UserService) Login(input LoginInput) (*models.User, error) {
 	return user, nil
 }
 
-type SignupInput struct {
+type SignupCustomerInput struct {
 	Email    string
 	Password string
-	Role     string
+}
+
+type SignupMerchantInput struct {
+	Email     string
+	Password  string
+	StoreName string
 }
 
 type SignupAdminInput struct {
 	Admin    *models.User
 	Email    string
 	Password string
-	Role     string
 }
 
 type LoginInput struct {
