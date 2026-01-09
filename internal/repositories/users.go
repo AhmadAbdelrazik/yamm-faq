@@ -35,7 +35,10 @@ func (r *UserRepository) Create(user *models.User) error {
 func (r *UserRepository) FindByID(id int) (*models.User, error) {
 	query := `SELECT email, role, hash WHERE id = $1 AND deleted_at IS NULL`
 
-	user := &models.User{ID: id}
+	user := &models.User{
+		ID:       id,
+		Password: &models.Password{},
+	}
 
 	err := r.db.QueryRow(query, id).Scan(
 		&user.Email,
@@ -58,7 +61,10 @@ func (r *UserRepository) FindByID(id int) (*models.User, error) {
 func (r *UserRepository) FindByEmail(email string) (*models.User, error) {
 	query := `SELECT id, role, hash WHERE email = $1 AND deleted_at IS NULL`
 
-	user := &models.User{Email: email}
+	user := &models.User{
+		Email:    email,
+		Password: &models.Password{},
+	}
 
 	err := r.db.QueryRow(query, email).Scan(
 		&user.ID,

@@ -12,7 +12,7 @@ type User struct {
 	ID       int
 	Email    string
 	Role     string
-	Password Password
+	Password *Password
 }
 
 func (u *User) Validate(v *validator.Validator) {
@@ -46,6 +46,7 @@ func NewPassword(password string) (*Password, error) {
 }
 
 func (i *Password) Validate(v *validator.Validator) {
+
 	if i.password == nil {
 		v.AddError("password", "required")
 		return
