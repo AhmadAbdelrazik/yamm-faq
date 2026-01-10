@@ -113,19 +113,7 @@ func (s *UserService) SignupAdmin(input SignupAdminInput) (*models.User, error) 
 
 // Login return user information in case of correct email and password.
 func (s *UserService) Login(input LoginInput) (*models.User, error) {
-	pass, _ := models.NewPassword(input.Password)
-
-	user := &models.User{
-		Email:    input.Email,
-		Password: pass,
-	}
-
-	v := validator.New()
-	if user.Validate(v); !v.Valid() {
-		return nil, v.Err()
-	}
-
-	user, err := s.repos.Users.FindByEmail(user.Email)
+	user, err := s.repos.Users.FindByEmail(input.Email)
 	if err != nil {
 		switch {
 		// for security sake. if email not found we return unauthorized too.

@@ -17,7 +17,7 @@ type UserRepository struct {
 // should use CreateMerchant instead
 func (r *UserRepository) Create(user *models.User) error {
 	query := `
-	INSERT INTO users(email, password, role)
+	INSERT INTO users(email, hash, role)
 	VALUES($1, $2, $3)
 	RETURNING id`
 
@@ -41,7 +41,7 @@ func (r *UserRepository) CreateMerchant(merchant *models.User, store *models.Sto
 		return err
 	}
 	query := `
-	INSERT INTO users(email, password, role)
+	INSERT INTO users(email, hash, role)
 	VALUES($1, $2, 'merchant')
 	RETURNING id`
 	args := []any{merchant.Email, merchant.Password.Hash}
@@ -66,11 +66,18 @@ func (r *UserRepository) CreateMerchant(merchant *models.User, store *models.Sto
 		return err
 	}
 
+	if err := tx.Commit(); err != nil {
+		tx.Rollback()
+		return err
+	}
 	return nil
 }
 
 func (r *UserRepository) FindByID(id int) (*models.User, error) {
-	query := `SELECT email, role, hash WHERE id = $1 AND deleted_at IS NULL`
+	query := `
+	SELECT email, role, hash 
+	FROM users 
+	WHERE id = $1 AND deleted_at IS NULL`
 
 	user := &models.User{
 		ID:       id,
@@ -96,7 +103,10 @@ func (r *UserRepository) FindByID(id int) (*models.User, error) {
 }
 
 func (r *UserRepository) FindByEmail(email string) (*models.User, error) {
-	query := `SELECT id, role, hash WHERE email = $1 AND deleted_at IS NULL`
+	query := `
+	SELECT id, role, hash 
+	FROM users 
+	WHERE email = $1 AND deleted_at IS NULL`
 
 	user := &models.User{
 		Email:    email,

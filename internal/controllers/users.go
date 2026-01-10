@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"errors"
+	"log/slog"
 	"net/http"
 
 	"github.com/AhmadAbdelrazik/yamm_faq/internal/httputil"
@@ -13,7 +14,7 @@ import (
 func (c *Controller) signupCustomerHandler(ctx *gin.Context) {
 	var input signupCustomerInput
 
-	if err := ctx.BindJSON(input); err != nil {
+	if err := ctx.BindJSON(&input); err != nil {
 		httputil.BadRequest(ctx, err)
 		return
 	}
@@ -28,6 +29,7 @@ func (c *Controller) signupCustomerHandler(ctx *gin.Context) {
 		default:
 			httputil.InternalServerError(ctx, err)
 		}
+		return
 	}
 
 	c.addSessionCookie(ctx, user)
@@ -41,7 +43,8 @@ func (c *Controller) signupCustomerHandler(ctx *gin.Context) {
 func (c *Controller) signupMerchantHandler(ctx *gin.Context) {
 	var input signupMerchantInput
 
-	if err := ctx.BindJSON(input); err != nil {
+	if err := ctx.BindJSON(&input); err != nil {
+		slog.Debug(err.Error())
 		httputil.BadRequest(ctx, err)
 		return
 	}
@@ -56,6 +59,7 @@ func (c *Controller) signupMerchantHandler(ctx *gin.Context) {
 		default:
 			httputil.InternalServerError(ctx, err)
 		}
+		return
 	}
 
 	c.addSessionCookie(ctx, user)
@@ -70,7 +74,7 @@ func (c *Controller) signupMerchantHandler(ctx *gin.Context) {
 func (c *Controller) loginHandler(ctx *gin.Context) {
 	var input loginInput
 
-	if err := ctx.BindJSON(input); err != nil {
+	if err := ctx.BindJSON(&input); err != nil {
 		httputil.BadRequest(ctx, err)
 		return
 	}
@@ -85,6 +89,7 @@ func (c *Controller) loginHandler(ctx *gin.Context) {
 		default:
 			httputil.InternalServerError(ctx, err)
 		}
+		return
 	}
 
 	c.addSessionCookie(ctx, user)
