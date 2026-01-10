@@ -12,7 +12,7 @@ import (
 const jwtCookieName = "JWTSESSION"
 
 func (c *Controller) addSessionCookie(ctx *gin.Context, user *models.User) error {
-	claims := jwt.NewUserClaims(user.ID, user.Role)
+	claims := jwt.NewUserClaims(user.ID, string(user.Role))
 	token, err := c.jwt.GenerateToken(claims)
 	if err != nil {
 		return err

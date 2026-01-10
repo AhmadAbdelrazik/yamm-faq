@@ -24,7 +24,7 @@ func (s *UserService) SignupCustomer(input SignupCustomerInput) (*models.User, e
 	user := &models.User{
 		Email:    input.Email,
 		Password: pass,
-		Role:     "customer",
+		Role:     models.RoleCustomer,
 	}
 
 	// validate that user is not an admin
@@ -52,7 +52,7 @@ func (s *UserService) SignupMerchant(input SignupMerchantInput) (*models.User, *
 	user := &models.User{
 		Email:    input.Email,
 		Password: pass,
-		Role:     "merchant",
+		Role:     models.RoleMerchant,
 	}
 
 	v := validator.New()
@@ -82,7 +82,7 @@ func (s *UserService) SignupMerchant(input SignupMerchantInput) (*models.User, *
 
 // SignupAdmin Allows existing admin to create a new user admin.
 func (s *UserService) SignupAdmin(input SignupAdminInput) (*models.User, error) {
-	if input.Admin.Role != "admin" {
+	if !input.Admin.IsAdmin() {
 		return nil, ErrUnauthorized
 	}
 
@@ -91,7 +91,7 @@ func (s *UserService) SignupAdmin(input SignupAdminInput) (*models.User, error) 
 	user := &models.User{
 		Email:    input.Email,
 		Password: pass,
-		Role:     "admin",
+		Role:     models.RoleAdmin,
 	}
 
 	v := validator.New()
@@ -138,6 +138,22 @@ func (s *UserService) Login(input LoginInput) (*models.User, error) {
 
 	if !user.Password.ComparePassword(input.Password) {
 		return nil, ErrUnauthorized
+	}
+
+	return user, nil
+}
+
+// FindByID returns user by ID. This is intended for auth middleware
+// retrievals. For login use Login method instead
+func (s *UserService) FindByID(id int) (*models.User, error) {
+	user, err := s.repos.Users.FindByID(id)
+	if err != nil {
+		switch {
+		case errors.Is(err, repositories.ErrNotFound):
+			return nil, ErrUnauthorized
+		default:
+			return nil, fmt.Errorf("find user by ID failed: %w", err)
+		}
 	}
 
 	return user, nil

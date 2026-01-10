@@ -1,7 +1,6 @@
 package models
 
 import (
-	"slices"
 	"strings"
 
 	"github.com/AhmadAbdelrazik/yamm_faq/pkg/validator"
@@ -11,7 +10,7 @@ import (
 type User struct {
 	ID       int
 	Email    string
-	Role     string
+	Role     Role
 	Password *Password
 }
 
@@ -21,11 +20,20 @@ func (u *User) Validate(v *validator.Validator) {
 	v.Check(len(strings.TrimSpace(u.Email)) > 0, "email", "required")
 	v.Check(validator.EmailRX.MatchString(u.Email), "email", "invalid email form")
 
-	roles := []string{"admin", "customer", "merchant"}
-	v.Check(len(strings.TrimSpace(u.Role)) > 0, "role", "required")
-	v.Check(slices.Contains(roles, u.Role), "role", "role must be (admin - customer - merchant)")
-
+	u.Role.Validate(v)
 	u.Password.Validate(v)
+}
+
+func (u *User) IsAdmin() bool {
+	return u.Role == RoleAdmin
+}
+
+func (u *User) IsMerchant() bool {
+	return u.Role == RoleMerchant
+}
+
+func (u *User) IsCustomer() bool {
+	return u.Role == RoleCustomer
 }
 
 type Password struct {

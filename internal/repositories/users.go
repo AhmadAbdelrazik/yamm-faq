@@ -21,7 +21,7 @@ func (r *UserRepository) Create(user *models.User) error {
 	VALUES($1, $2, $3)
 	RETURNING id`
 
-	args := []any{user.Email, user.Password.Hash, user.Role}
+	args := []any{user.Email, user.Password.Hash, string(user.Role)}
 	if err := r.db.QueryRow(query, args...).Scan(&user.ID); err != nil {
 		switch {
 		case strings.Contains(err.Error(), "users_email_key"):
