@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-var ErrInvalid = errors.New("invalid validation")
+var ErrInvalid = errors.New("invalid entity")
 
 var (
 	EmailRX    = regexp.MustCompile(`^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$`)
@@ -47,6 +47,7 @@ func (v *Validator) Valid() bool {
 	return len(v.Errors) == 0
 }
 
+// Err returns ErrInvalid in case of any errors. otherwise return nil
 func (v *Validator) Err() error {
 	if v.Valid() {
 		return nil

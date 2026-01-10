@@ -95,3 +95,31 @@ it provide me more control over the sessions since I can easily delete them
 from my caching system, it will require me to setup a caching system like Redis
 or implement my own simple cache (which I implemented in my Last Project
 available on my GitHub called Showtime).
+
+# Day 3: FAQ Design
+
+## Database and Model design
+
+### Language
+
+The next phase is to implement the FAQ, FAQ categories, and the translations.
+The first design decisions is where to handle supported languages, should we
+make a database table for languages and reference it in the FAQs or
+translations tables? or should we use go Enums? I opted for the second option
+since it was not mentioned in the design document that there would be a
+language table.
+
+### FAQ Categories
+
+Although based on database relations between tables, the FAQ category has many
+FAQs and each FAQ has only one FAQ category. I have chosen to include the
+Category inside the FAQ model so the model is encapsulated with categories,
+languages, and translation. We can consider the model as the root aggregate in
+this scenario.
+
+### Store FAQs vs Global FAQs
+
+For each FAQ there is two possible outcomes. Local and set to a store or
+Global. Based on this I've decided that there would be is_global boolean field
+and nullable store_id field. This would allow the same table to contain both
+store-specific and global FAQs.

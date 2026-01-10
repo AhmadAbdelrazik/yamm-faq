@@ -60,5 +60,9 @@ func (j *JwtService) VerifyToken(tokenString string) (*UserClaims, error) {
 		return nil, errors.New("Unable to use user claims")
 	}
 
+	if err := claims.Valid(); err != nil {
+		return nil, errors.New("invalid token")
+	}
+
 	return claims, nil
 }
