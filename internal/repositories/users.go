@@ -59,7 +59,7 @@ func (r *UserRepository) CreateMerchant(merchant *models.User, store *models.Sto
 	store.MerchantID = merchant.ID
 
 	query = `INSERT INTO stores(merchant_id, name) VALUES ($1, $2) RETURNING id`
-	args = []any{store.Name, store.MerchantID}
+	args = []any{store.MerchantID, store.Name}
 
 	if err := tx.QueryRow(query, args...).Scan(&store.ID); err != nil {
 		tx.Rollback()

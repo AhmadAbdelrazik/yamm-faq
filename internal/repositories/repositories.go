@@ -4,15 +4,19 @@ import (
 	"database/sql"
 	"errors"
 	"log/slog"
+
+	_ "github.com/lib/pq"
 )
 
 var (
-	ErrDuplicate = errors.New("duplicate entry")
-	ErrNotFound  = errors.New("resource not found")
+	ErrDuplicate    = errors.New("duplicate entry")
+	ErrNotFound     = errors.New("resource not found")
+	ErrEditConflict = errors.New("edit conflict")
 )
 
 type Repositories struct {
-	Users *UserRepository
+	Users         *UserRepository
+	FaqCategories *FaqCategoryRepository
 }
 
 // New creates new repository instance using dsn.
@@ -38,6 +42,7 @@ func New(dsn string) (*Repositories, error) {
 	}
 
 	return &Repositories{
-		Users: &UserRepository{db},
+		Users:         &UserRepository{db},
+		FaqCategories: &FaqCategoryRepository{db},
 	}, nil
 }
