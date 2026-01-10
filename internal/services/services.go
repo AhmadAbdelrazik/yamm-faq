@@ -11,11 +11,13 @@ var (
 )
 
 type Services struct {
-	Users *UserService
+	Users         *UserService
+	FAQCategories *FaqCategoryService
 }
 
 func New(repos *repositories.Repositories) *Services {
 	return &Services{
-		Users: &UserService{repos},
+		Users:         &UserService{repos},
+		FAQCategories: &FaqCategoryService{repos},
 	}
 }
