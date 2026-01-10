@@ -105,7 +105,7 @@ type signupCustomerInput struct {
 type signupMerchantInput struct {
 	Email     string `json:"email"`
 	Password  string `json:"password"`
-	StoreName string `json:"storeName"`
+	StoreName string `json:"store_name"`
 }
 
 type customerSignupResponse struct {

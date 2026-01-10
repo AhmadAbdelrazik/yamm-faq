@@ -11,6 +11,7 @@ import (
 
 var (
 	ErrUserAlreadyExists = errors.New("user already exists")
+	ErrUserNotFound      = errors.New("user not found")
 )
 
 type UserService struct {
@@ -138,7 +139,7 @@ func (s *UserService) FindByID(id int) (*models.User, error) {
 	if err != nil {
 		switch {
 		case errors.Is(err, repositories.ErrNotFound):
-			return nil, ErrUnauthorized
+			return nil, ErrUserNotFound
 		default:
 			return nil, fmt.Errorf("find user by ID failed: %w", err)
 		}
