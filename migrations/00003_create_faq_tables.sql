@@ -32,12 +32,12 @@ CREATE TABLE IF NOT EXISTS translations (
   question TEXT NOT NULL,
   answer TEXT NOT NULL,
 
+  CONSTRAINT translations_faq_id_language_idx UNIQUE(faq_id, language),
+
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL
 );
-
-CREATE INDEX translations_faq_id_idx ON translations(faq_id, language);
 -- +goose StatementEnd
 
 -- +goose Down
