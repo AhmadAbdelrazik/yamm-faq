@@ -19,6 +19,7 @@ type Repositories struct {
 	FaqCategories *FaqCategoryRepository
 	Faqs          *FAQRepository
 	Stores        *StoresRepository
+	Translations  *TranslationsRepository
 }
 
 // New creates new repository instance using dsn.
@@ -48,5 +49,6 @@ func New(dsn string) (*Repositories, error) {
 		FaqCategories: &FaqCategoryRepository{db},
 		Faqs:          &FAQRepository{db},
 		Stores:        &StoresRepository{db},
+		Translations:  &TranslationsRepository{db},
 	}, nil
 }
