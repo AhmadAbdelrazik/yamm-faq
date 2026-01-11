@@ -17,6 +17,7 @@ var (
 type Repositories struct {
 	Users         *UserRepository
 	FaqCategories *FaqCategoryRepository
+	Faqs          *FAQRepository
 	Stores        *StoresRepository
 }
 
@@ -45,6 +46,7 @@ func New(dsn string) (*Repositories, error) {
 	return &Repositories{
 		Users:         &UserRepository{db},
 		FaqCategories: &FaqCategoryRepository{db},
+		Faqs:          &FAQRepository{db},
 		Stores:        &StoresRepository{db},
 	}, nil
 }
