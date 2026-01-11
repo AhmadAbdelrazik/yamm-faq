@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS translations (
   deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL
 );
 
-CREATE INDEX translations_faq_id_idx ON translations(faq_id);
+CREATE INDEX translations_faq_id_idx ON translations(faq_id, language);
 -- +goose StatementEnd
 
 -- +goose Down

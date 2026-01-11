@@ -123,3 +123,67 @@ For each FAQ there is two possible outcomes. Local and set to a store or
 Global. Based on this I've decided that there would be is_global boolean field
 and nullable store_id field. This would allow the same table to contain both
 store-specific and global FAQs.
+
+# Day 4: Routing Designs
+
+Today's question is designing the right RESTFUL API. Our resources consists of:
+
+- FAQ Categories
+- FAQs
+- FAQ Translations
+- Store (created automatically for merchants)
+- Users (sign-up and login)
+
+To save space, we will assume that each API Endpoint would have /api/v1 before it.
+
+## FAQ Categories
+
+```
+POST   /faq-categories
+GET    /faq-categories
+PUT    /faq-categories/:category
+DELETE /faq-categories/:category
+```
+
+The GET request would return all the available categories.
+
+## FAQs
+
+```
+POST   /faq-categories/:category      # Global FAQs
+GET    /faq-categories/:category      # Returns all FAQs (store specific + global)
+PUT    /faq-categories/:category/:id  # Edit Any FAQ (admins)
+DELETE /faq-categories/:category/:id  # Delete Any FAQ (admins)
+
+POST   /stores/:id/faqs               # Store FAQs
+GET    /stores/:id/faqs               # Returns all store-specific FAQs
+PUT    /stores/:id/faqs/:faq-id       # Edit store specific FAQ (merchants + admins)
+DELETE /stores/:id/faqs/:faq-id       # Delete store specific FAQ (merchants + admins)
+```
+
+### Translations
+
+Since translations is not that wide, meaning that one FAQs would have roughly 2
+or 3 translations maximum. We can either make one endpoint returning all
+translations for example `/faq-categories/:category/:id/translations`. Or we
+can go for endpoint returning one language each. The second approach might take
+more code, however it's better for bandwidth since we are going to send only
+the needed language.
+
+I have decided to implement both approaches for convenience
+
+```
+POST    /faq-categories/:category/:id/translations # Add Translation to a Global FAQ
+GET     /faq-categories/:category/:id/translations # Get all available translations.
+GET     /faq-categories/:category/:id/:language    # Get specific translation.
+PUT     /faq-categories/:category/:id/:language    # Edit translation for specific language
+DELETE  /faq-categories/:category/:id/:langauge    # Delete specific translation
+
+POST    /stores/:id/faqs/:faq-id/translations      # Add Translation to a Store FAQ
+GET     /stores/:id/faqs/:faq-id/translations      # Get all available translations.
+GET     /stores/:id/faqs/:faq-id/:language         # Get specific translation.
+PUT     /stores/:id/faqs/:faq-id/:language         # Edit translation for specific language
+DELETE  /stores/:id/faqs/:faq-id/:language         # Delete specific translation
+
+
+```
