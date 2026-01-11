@@ -17,6 +17,7 @@ var (
 type Repositories struct {
 	Users         *UserRepository
 	FaqCategories *FaqCategoryRepository
+	Stores        *StoresRepository
 }
 
 // New creates new repository instance using dsn.
@@ -44,5 +45,6 @@ func New(dsn string) (*Repositories, error) {
 	return &Repositories{
 		Users:         &UserRepository{db},
 		FaqCategories: &FaqCategoryRepository{db},
+		Stores:        &StoresRepository{db},
 	}, nil
 }
