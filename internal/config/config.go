@@ -1,7 +1,6 @@
 package config
 
 import (
-	"log"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -15,11 +14,7 @@ type Config struct {
 }
 
 func Load() *Config {
-	// load .env
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("failed to load .env file")
-		os.Exit(1)
-	}
+	godotenv.Load()
 
 	return &Config{
 		DSN:         os.Getenv("DB_DSN"),
