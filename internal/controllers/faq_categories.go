@@ -12,6 +12,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Summary      Create FAQ category
+// @Description  Create a new FAQ category (Admin only)
+// @Tags         FAQ Categories
+// @Accept       json
+// @Produce      json
+// @Param        input  body      createFaqCategoryInput  true  "Category Name"
+// @Success      201    {object}  createFaqCategoryResponse
+// @Failure      400    {object}  httputil.HTTPError
+// @Failure      403    {object}  httputil.HTTPError "Unauthorized/Admin only"
+// @Failure      409    {object}  httputil.HTTPError "Category already exists"
+// @Failure      422    {object}  httputil.HTTPError "Validation failed"
+// @Failure      500    {object}  httputil.HTTPError
+// @Router       /faq-categories [post]
 func (c *Controller) createFaqCategoryHandler(ctx *gin.Context) {
 	user := ctx.MustGet(userContextKey).(*models.User)
 
@@ -47,6 +60,13 @@ func (c *Controller) createFaqCategoryHandler(ctx *gin.Context) {
 	)
 }
 
+// @Summary      Get all FAQ categories
+// @Description  Retrieve a list of all existing FAQ categories
+// @Tags         FAQ Categories
+// @Produce      json
+// @Success      200  {object}  getAllFaqCategoryResponse
+// @Failure      500  {object}  httputil.HTTPError
+// @Router       /faq-categories [get]
 func (c *Controller) getAllFaqCategoryHandler(ctx *gin.Context) {
 	categories, err := c.Services.FAQCategories.GetAll()
 	if err != nil {
@@ -65,6 +85,21 @@ func (c *Controller) getAllFaqCategoryHandler(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, getAllFaqCategoryResponse{dto})
 }
 
+// @Summary      Update FAQ category
+// @Description  Update the name of an existing FAQ category (Admin only)
+// @Tags         FAQ Categories
+// @Accept       json
+// @Produce      json
+// @Param        category  path      string                  true  "Current Category Name"
+// @Param        input     body      updateFaqCategoryInput  true  "New Category Name"
+// @Success      200       {object}  updateFaqCategoryResponse
+// @Failure      400       {object}  httputil.HTTPError
+// @Failure      403       {object}  httputil.HTTPError "Unauthorized"
+// @Failure      404       {object}  httputil.HTTPError "Category not found"
+// @Failure      409       {object}  httputil.HTTPError "Name conflict or edit conflict"
+// @Failure      422       {object}  httputil.HTTPError "Validation failed"
+// @Failure      500       {object}  httputil.HTTPError
+// @Router       /faq-categories/{category} [put]
 func (c *Controller) updateFaqCategoryHandler(ctx *gin.Context) {
 	user := ctx.MustGet(userContextKey).(*models.User)
 
@@ -107,6 +142,16 @@ func (c *Controller) updateFaqCategoryHandler(ctx *gin.Context) {
 	)
 }
 
+// @Summary      Delete FAQ category
+// @Description  Remove an FAQ category from the system (Admin only)
+// @Tags         FAQ Categories
+// @Produce      json
+// @Param        category  path      string  true  "Category Name"
+// @Success      200       {object}  deletedFaqCategoryResponse
+// @Failure      403       {object}  httputil.HTTPError "Unauthorized"
+// @Failure      404       {object}  httputil.HTTPError "Category not found"
+// @Failure      500       {object}  httputil.HTTPError
+// @Router       /faq-categories/{category} [delete]
 func (c *Controller) deleteFaqCategoryHandler(ctx *gin.Context) {
 	user := ctx.MustGet(userContextKey).(*models.User)
 

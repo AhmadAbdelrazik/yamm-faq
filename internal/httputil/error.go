@@ -10,7 +10,7 @@ import (
 
 // NewError example
 func NewError(ctx *gin.Context, status int, err error) {
-	er := httpError{
+	er := HTTPError{
 		Code:    status,
 		Message: err.Error(),
 	}
@@ -35,7 +35,7 @@ func InternalServerError(ctx *gin.Context, err error) {
 }
 
 // HTTPError example
-type httpError struct {
+type HTTPError struct {
 	Code    int    `json:"code" example:"400"`
 	Message string `json:"message" example:"status bad request"`
 }

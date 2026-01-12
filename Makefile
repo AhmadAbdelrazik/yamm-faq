@@ -5,3 +5,6 @@ app-run:
 
 psql:
 	@psql -U postgres --dbname=$(DB_DATABASE)
+
+swagger:
+	swag init --generalInfo cmd/api/main.go --output cmd/api/docs --dir .

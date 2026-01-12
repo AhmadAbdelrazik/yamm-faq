@@ -1,0 +1,1146 @@
+basePath: /api/v1
+definitions:
+  controllers.adminUpdateFaqInput:
+    properties:
+      answer:
+        type: string
+      category:
+        type: string
+      is_global:
+        type: boolean
+      language:
+        type: string
+      question:
+        type: string
+    type: object
+  controllers.createFaqCategoryInput:
+    properties:
+      name:
+        type: string
+    type: object
+  controllers.createFaqCategoryResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  controllers.createFaqInput:
+    properties:
+      answer:
+        type: string
+      category:
+        type: string
+      language:
+        type: string
+      question:
+        type: string
+    type: object
+  controllers.createFaqResponse:
+    properties:
+      faq:
+        $ref: '#/definitions/controllers.faqDTO'
+      message:
+        type: string
+    type: object
+  controllers.createTranslationInput:
+    properties:
+      answer:
+        type: string
+      language:
+        type: string
+      question:
+        type: string
+    type: object
+  controllers.createTranslationResponse:
+    properties:
+      message:
+        type: string
+      translation:
+        $ref: '#/definitions/controllers.translationDTO'
+    type: object
+  controllers.customerSignupResponse:
+    properties:
+      customer_id:
+        type: integer
+      message:
+        type: string
+    type: object
+  controllers.deleteFaqResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  controllers.deleteTranslationResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  controllers.deletedFaqCategoryResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  controllers.faqCategoryDTO:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  controllers.faqDTO:
+    properties:
+      answer:
+        type: string
+      category:
+        type: string
+      id:
+        type: integer
+      language:
+        type: string
+      question:
+        type: string
+    type: object
+  controllers.getAllFaqCategoryResponse:
+    properties:
+      categories:
+        items:
+          $ref: '#/definitions/controllers.faqCategoryDTO'
+        type: array
+    type: object
+  controllers.getAllGlobalFaqsResponse:
+    properties:
+      faqs:
+        items:
+          $ref: '#/definitions/controllers.faqDTO'
+        type: array
+    type: object
+  controllers.getFaqTranslationsResponse:
+    properties:
+      category:
+        type: string
+      default_language:
+        type: string
+      id:
+        type: integer
+      translations:
+        items:
+          $ref: '#/definitions/controllers.translationDTO'
+        type: array
+    type: object
+  controllers.loginInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  controllers.loginResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  controllers.merchantSignupResponse:
+    properties:
+      merchant_id:
+        type: integer
+      message:
+        type: string
+      store_id:
+        type: integer
+    type: object
+  controllers.merchantUpdateFaqInput:
+    properties:
+      answer:
+        type: string
+      category:
+        type: string
+      language:
+        type: string
+      question:
+        type: string
+    type: object
+  controllers.signupCustomerInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  controllers.signupMerchantInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      store_name:
+        type: string
+    type: object
+  controllers.translationDTO:
+    properties:
+      answer:
+        type: string
+      faq_id:
+        type: integer
+      id:
+        type: integer
+      language:
+        type: string
+      question:
+        type: string
+    type: object
+  controllers.updateFaqCategoryInput:
+    properties:
+      new_name:
+        type: string
+    type: object
+  controllers.updateFaqCategoryResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  controllers.updateFaqResponse:
+    properties:
+      faq:
+        $ref: '#/definitions/controllers.faqDTO'
+      message:
+        type: string
+    type: object
+  controllers.updateTranslationInput:
+    properties:
+      answer:
+        type: string
+      language:
+        type: string
+      question:
+        type: string
+    type: object
+  controllers.updateTranslationResponse:
+    properties:
+      message:
+        type: string
+      translation:
+        $ref: '#/definitions/controllers.translationDTO'
+    type: object
+  httputil.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: ahmad.abdelrazik.swe@gmail.com
+    name: Ahmad Abdelrazik
+  description: FAQ Management System
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  title: FAQ API
+  version: "1.0"
+paths:
+  /faq-categories:
+    get:
+      description: Retrieve a list of all existing FAQ categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.getAllFaqCategoryResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Get all FAQ categories
+      tags:
+      - FAQ Categories
+    post:
+      consumes:
+      - application/json
+      description: Create a new FAQ category (Admin only)
+      parameters:
+      - description: Category Name
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.createFaqCategoryInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.createFaqCategoryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "403":
+          description: Unauthorized/Admin only
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "409":
+          description: Category already exists
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "422":
+          description: Validation failed
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Create FAQ category
+      tags:
+      - FAQ Categories
+  /faq-categories/{category}:
+    delete:
+      description: Remove an FAQ category from the system (Admin only)
+      parameters:
+      - description: Category Name
+        in: path
+        name: category
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.deletedFaqCategoryResponse'
+        "403":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Category not found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Delete FAQ category
+      tags:
+      - FAQ Categories
+    get:
+      description: Retrieve all global FAQs for a specific category
+      parameters:
+      - description: Category Name
+        in: path
+        name: category
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.getAllGlobalFaqsResponse'
+        "404":
+          description: Category not found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Get global FAQs by category
+      tags:
+      - Global FAQs
+    post:
+      consumes:
+      - application/json
+      description: Create a new global FAQ within a category (Admin only)
+      parameters:
+      - description: Category Name
+        in: path
+        name: category
+        required: true
+        type: string
+      - description: FAQ Data
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.createFaqInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.createFaqResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "403":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Category not found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "422":
+          description: Validation failed
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Create global FAQ
+      tags:
+      - Global FAQs
+    put:
+      consumes:
+      - application/json
+      description: Update the name of an existing FAQ category (Admin only)
+      parameters:
+      - description: Current Category Name
+        in: path
+        name: category
+        required: true
+        type: string
+      - description: New Category Name
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.updateFaqCategoryInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.updateFaqCategoryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "403":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Category not found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "409":
+          description: Name conflict or edit conflict
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "422":
+          description: Validation failed
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Update FAQ category
+      tags:
+      - FAQ Categories
+  /faq-categories/{category}/{id}:
+    delete:
+      description: Remove a global FAQ (Admin only)
+      parameters:
+      - description: Category Name
+        in: path
+        name: category
+        required: true
+        type: string
+      - description: FAQ ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.deleteFaqResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Delete global FAQ
+      tags:
+      - Global FAQs
+    put:
+      consumes:
+      - application/json
+      description: Update content or category of a global FAQ (Admin only)
+      parameters:
+      - description: Category Name
+        in: path
+        name: category
+        required: true
+        type: string
+      - description: FAQ ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update Data
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.adminUpdateFaqInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.updateFaqResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: FAQ or Category not found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Update global FAQ
+      tags:
+      - Global FAQs
+  /faq-categories/{category}/{id}/{language}:
+    delete:
+      description: Remove a specific language translation (Cannot delete default language)
+        (Admin only)
+      parameters:
+      - description: Category Name
+        in: path
+        name: category
+        required: true
+        type: string
+      - description: FAQ ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Language to Delete
+        in: path
+        name: language
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.deleteTranslationResponse'
+        "409":
+          description: Cannot delete default language or Unauthorized
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete global FAQ translation
+      tags:
+      - Global FAQ Translations
+    get:
+      description: Retrieve a specific language version of a global FAQ
+      parameters:
+      - description: Category Name
+        in: path
+        name: category
+        required: true
+        type: string
+      - description: FAQ ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Language Code (e.g., 'en', 'ar')
+        in: path
+        name: language
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.translationDTO'
+        "404":
+          description: Translation not found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "422":
+          description: Invalid language code
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Get global FAQ translation by language
+      tags:
+      - Global FAQ Translations
+    put:
+      consumes:
+      - application/json
+      description: Modify an existing translation for a global FAQ (Admin only)
+      parameters:
+      - description: Category Name
+        in: path
+        name: category
+        required: true
+        type: string
+      - description: FAQ ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Current Language
+        in: path
+        name: language
+        required: true
+        type: string
+      - description: Updated Content
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.updateTranslationInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.updateTranslationResponse'
+        "404":
+          description: Translation not found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "409":
+          description: Unauthorized or Conflict
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update global FAQ translation
+      tags:
+      - Global FAQ Translations
+  /faq-categories/{category}/{id}/translations:
+    get:
+      description: Retrieve every available language translation for a specific global
+        FAQ
+      parameters:
+      - description: Category Name
+        in: path
+        name: category
+        required: true
+        type: string
+      - description: FAQ ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.getFaqTranslationsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Category or FAQ not found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Get all translations for a global FAQ
+      tags:
+      - Global FAQ Translations
+    post:
+      consumes:
+      - application/json
+      description: Add a new language translation to an existing global FAQ (Admin
+        only)
+      parameters:
+      - description: Category Name
+        in: path
+        name: category
+        required: true
+        type: string
+      - description: FAQ ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Translation Content
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.createTranslationInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.createTranslationResponse'
+        "403":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "409":
+          description: Translation already exists
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "422":
+          description: Validation failed
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create global FAQ translation
+      tags:
+      - Global FAQ Translations
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and return a session cookie
+      parameters:
+      - description: Login Credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.loginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.loginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Login user
+      tags:
+      - Authentication
+  /signup/customer:
+    post:
+      consumes:
+      - application/json
+      description: Create a new customer account and return a session cookie
+      parameters:
+      - description: Customer Signup Details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.signupCustomerInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.customerSignupResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Signup a new customer
+      tags:
+      - Authentication
+  /signup/merchant:
+    post:
+      consumes:
+      - application/json
+      description: Create a new merchant account along with a store and return a session
+        cookie
+      parameters:
+      - description: Merchant Signup Details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.signupMerchantInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.merchantSignupResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Signup a new merchant
+      tags:
+      - Authentication
+  /stores/{id}/faqs:
+    get:
+      description: Retrieve all FAQs belonging to a specific store
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.getAllGlobalFaqsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Store not found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Get store FAQs
+      tags:
+      - Store FAQs
+    post:
+      consumes:
+      - application/json
+      description: Create a new FAQ for the merchant's store
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: FAQ Data
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.createFaqInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.createFaqResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Category or Store not found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Create store FAQ
+      tags:
+      - Store FAQs
+  /stores/{id}/faqs/{faq-id}:
+    delete:
+      description: Remove an FAQ from a store (Merchant only)
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: FAQ ID
+        in: path
+        name: faq-id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.deleteFaqResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Delete store FAQ
+      tags:
+      - Store FAQs
+    put:
+      consumes:
+      - application/json
+      description: Update a specific store FAQ (Merchant only)
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: FAQ ID
+        in: path
+        name: faq-id
+        required: true
+        type: integer
+      - description: Update Data
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.merchantUpdateFaqInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.updateFaqResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Update store FAQ
+      tags:
+      - Store FAQs
+  /stores/{id}/faqs/{faq-id}/{language}:
+    delete:
+      description: Remove a translation from a store FAQ (Merchant only)
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: FAQ ID
+        in: path
+        name: faq-id
+        required: true
+        type: integer
+      - description: Language to Delete
+        in: path
+        name: language
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.deleteTranslationResponse'
+        "409":
+          description: Cannot delete default language
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete store FAQ translation
+      tags:
+      - Store FAQ Translations
+    get:
+      description: Retrieve a specific language version of a store-specific FAQ
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: FAQ ID
+        in: path
+        name: faq-id
+        required: true
+        type: integer
+      - description: Language Code
+        in: path
+        name: language
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.translationDTO'
+      summary: Get store FAQ translation by language
+      tags:
+      - Store FAQ Translations
+    put:
+      consumes:
+      - application/json
+      description: Modify an existing translation for a store FAQ (Merchant only)
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: FAQ ID
+        in: path
+        name: faq-id
+        required: true
+        type: integer
+      - description: Current Language
+        in: path
+        name: language
+        required: true
+        type: string
+      - description: Updated Content
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.updateTranslationInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.updateTranslationResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update store FAQ translation
+      tags:
+      - Store FAQ Translations
+  /stores/{id}/faqs/{faq-id}/translations:
+    get:
+      description: Retrieve every available language translation for a specific store's
+        FAQ
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: FAQ ID
+        in: path
+        name: faq-id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.getFaqTranslationsResponse'
+        "404":
+          description: Store or FAQ not found
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      summary: Get all translations for a store FAQ
+      tags:
+      - Store FAQ Translations
+    post:
+      consumes:
+      - application/json
+      description: Add a new language translation to an existing store FAQ (Merchant
+        only)
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: FAQ ID
+        in: path
+        name: faq-id
+        required: true
+        type: integer
+      - description: Translation Content
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.createTranslationInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.createTranslationResponse'
+        "409":
+          description: Already exists or Unauthorized
+          schema:
+            $ref: '#/definitions/httputil.HTTPError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create store FAQ translation
+      tags:
+      - Store FAQ Translations
+swagger: "2.0"

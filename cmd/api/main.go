@@ -10,8 +10,23 @@ import (
 	"github.com/AhmadAbdelrazik/yamm_faq/internal/services"
 	"github.com/AhmadAbdelrazik/yamm_faq/pkg/jwt"
 	"github.com/gin-gonic/gin"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title           FAQ API
+// @version         1.0
+// @description     FAQ Management System
+
+// @contact.name   Ahmad Abdelrazik
+// @contact.email  ahmad.abdelrazik.swe@gmail.com
+
+// @license.name  MIT
+// @license.url   https://opensource.org/licenses/MIT
+
+// @host      localhost:8080
+// @BasePath  /api/v1
 func main() {
 	cfg := config.Load()
 
@@ -30,6 +45,7 @@ func main() {
 
 	r := gin.Default()
 	r.SetTrustedProxies(nil)
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	controller.Routes(r)
 
