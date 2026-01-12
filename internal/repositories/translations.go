@@ -145,3 +145,21 @@ func (r *TranslationsRepository) Delete(id int) error {
 
 	return nil
 }
+
+// DeleteByLanguage deletes a specific translation based on language.
+func (r *TranslationsRepository) DeleteByLanguage(faqID int, language string) error {
+	query := `DELETE FROM translations WHERE faq_id = $1 AND language = $2`
+
+	result, err := r.db.Exec(query, faqID, language)
+	if err != nil {
+		return err
+	}
+
+	if n, err := result.RowsAffected(); err != nil {
+		return err
+	} else if n == 0 {
+		return ErrNotFound
+	}
+
+	return nil
+}
