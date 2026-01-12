@@ -2,12 +2,14 @@ package controllers
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 // Routes add routes to the gin engine.
 func (c *Controller) Routes(r *gin.Engine) {
+	r.Use(rateLimitMiddleware(2, 2, 15*time.Minute))
 	api := r.Group("/api/v1")
 
 	auth := api.Group("/")
