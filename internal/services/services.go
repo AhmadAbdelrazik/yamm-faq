@@ -15,6 +15,7 @@ type Services struct {
 	Stores        *StoreService
 	FAQCategories *FaqCategoryService
 	FAQs          *FaqServices
+	Translations  *TranslationService
 }
 
 func New(repos *repositories.Repositories) *Services {
@@ -23,5 +24,6 @@ func New(repos *repositories.Repositories) *Services {
 		Stores:        &StoreService{repos},
 		FAQCategories: &FaqCategoryService{repos},
 		FAQs:          &FaqServices{repos},
+		Translations:  &TranslationService{repos},
 	}
 }
