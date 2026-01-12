@@ -78,6 +78,8 @@ docker-compose up --build
 
 **Swagger Documentation:** Once running, visit [http://localhost:8080/swagger/index.html](https://www.google.com/search?q=http://localhost:8080/swagger/index.html).
 
+Postman Documentation: postman collection with all the endpoint available on the root directory
+
 ---
 
 ## 🛠 Complete Endpoint Reference

@@ -1,0 +1,785 @@
+{
+	"info": {
+		"_postman_id": "80246230-41a7-46b5-863d-af801c2230e4",
+		"name": "FAQ Management System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "51406181",
+		"_collection_link": "https://ahmad-abdelrazik-swe-442389.postman.co/workspace/FAQ-Yamm~4516b549-8bb6-44b5-a2df-1469585e58af/collection/51406181-80246230-41a7-46b5-863d-af801c2230e4?action=share&source=collection_link&creator=51406181"
+	},
+	"item": [
+		{
+			"name": "FAQ Categories",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"refund\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/faq-categories",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"faq-categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/faq-categories",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"faq-categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"new_name\": \"refunds\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}/faq-categories/:category",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"faq-categories",
+								":category"
+							],
+							"variable": [
+								{
+									"key": "category",
+									"value": "refunds"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"refund\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}/faq-categories/:category",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"faq-categories",
+								":category"
+							],
+							"variable": [
+								{
+									"key": "category",
+									"value": "refunds"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FAQs",
+			"item": [
+				{
+					"name": "Global FAQs",
+					"item": [
+						{
+							"name": "Get All By Category",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "/faq-categories/:category",
+									"path": [
+										"faq-categories",
+										":category"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Global FAQ",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"question\": \"question 2\",\r\n    \"answer\" : \"answer 2\",\r\n    \"language\": \"en\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/faq-categories/:category",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"faq-categories",
+										":category"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Global FAQ",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"question\": \"question 3\",\r\n    \"answer\" : \"answer 3\",\r\n    \"language\": \"en\",\r\n    \"is_global\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/faq-categories/:category/:id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"faq-categories",
+										":category",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										},
+										{
+											"key": "id",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Global FAQ",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"question\": \"question 1\",\r\n    \"answer\" : \"answer1\",\r\n    \"language\": \"ar\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/faq-categories/:category",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"faq-categories",
+										":category"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Store-Specific FAQs",
+					"item": [
+						{
+							"name": "Get All By Store",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/stores/:id/faqs",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"stores",
+										":id",
+										"faqs"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "Store ID"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Store FAQ",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"question\": \"question 1\",\r\n    \"answer\" : \"answer1\",\r\n    \"language\": \"ar\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/faq-categories/:category",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"faq-categories",
+										":category"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Store FAQ",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"category\": \"refunds\",\r\n    \"question\": \"question 5\",\r\n    \"answer\" : \"answer 5\",\r\n    \"language\": \"ar\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/stores/:id/faqs/:faq-id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"stores",
+										":id",
+										"faqs",
+										":faq-id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										},
+										{
+											"key": "faq-id",
+											"value": "12"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Store FAQ",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"question\": \"question 1\",\r\n    \"answer\" : \"answer1\",\r\n    \"language\": \"ar\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/stores/:id/faqs/:faq-id",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"stores",
+										":id",
+										"faqs",
+										":faq-id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										},
+										{
+											"key": "faq-id",
+											"value": "12"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Translations",
+			"item": [
+				{
+					"name": "Global Translations",
+					"item": [
+						{
+							"name": "Add Translation",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "// {\r\n//     \"language\": \"ar\",\r\n//     \"question\": \"سؤال جديد\",\r\n//     \"answer\": \"إجابة جديدة\"\r\n// }\r\n\r\n{\r\n    \"language\": \"en\",\r\n    \"question\": \"an english question\",\r\n    \"answer\": \"an english response\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/faq-categories/:category/:id/translations",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"faq-categories",
+										":category",
+										":id",
+										"translations"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										},
+										{
+											"key": "id",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Translations",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/faq-categories/:category/:id/translations",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"faq-categories",
+										":category",
+										":id",
+										"translations"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										},
+										{
+											"key": "id",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Translation",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/faq-categories/:category/:id/:language",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"faq-categories",
+										":category",
+										":id",
+										":language"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										},
+										{
+											"key": "id",
+											"value": "5"
+										},
+										{
+											"key": "language",
+											"value": "en"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Translation",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"question\": \"My Updated Question\",\r\n    \"answer\": \"My Updated Answer\",\r\n    \"language\": \"en\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/faq-categories/:category/:id/:language",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"faq-categories",
+										":category",
+										":id",
+										":language"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										},
+										{
+											"key": "id",
+											"value": "5"
+										},
+										{
+											"key": "language",
+											"value": "en"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Translation",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/faq-categories/:category/:id/:language",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"faq-categories",
+										":category",
+										":id",
+										":language"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										},
+										{
+											"key": "id",
+											"value": "5"
+										},
+										{
+											"key": "language",
+											"value": "en"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Store-Specific Translations",
+					"item": [
+						{
+							"name": "Add Translation",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "// {\r\n//     \"language\": \"ar\",\r\n//     \"question\": \"سؤال جديد\",\r\n//     \"answer\": \"إجابة جديدة\"\r\n// }\r\n\r\n{\r\n    \"language\": \"en\",\r\n    \"question\": \"an english question\",\r\n    \"answer\": \"an english response\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/faq-categories/:category/:id/translations",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"faq-categories",
+										":category",
+										":id",
+										"translations"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										},
+										{
+											"key": "id",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Translations",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/faq-categories/:category/:id/translations",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"faq-categories",
+										":category",
+										":id",
+										"translations"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										},
+										{
+											"key": "id",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Translation",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/faq-categories/:category/:id/:language",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"faq-categories",
+										":category",
+										":id",
+										":language"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										},
+										{
+											"key": "id",
+											"value": "5"
+										},
+										{
+											"key": "language",
+											"value": "en"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Translation",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"question\": \"My Updated Question\",\r\n    \"answer\": \"My Updated Answer\",\r\n    \"language\": \"en\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/faq-categories/:category/:id/:language",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"faq-categories",
+										":category",
+										":id",
+										":language"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										},
+										{
+											"key": "id",
+											"value": "5"
+										},
+										{
+											"key": "language",
+											"value": "en"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Translation",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"question\": \"My Updated Question\",\r\n    \"answer\": \"My Updated Answer\",\r\n    \"language\": \"en\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/faq-categories/:category/:id/:language",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"faq-categories",
+										":category",
+										":id",
+										":language"
+									],
+									"variable": [
+										{
+											"key": "category",
+											"value": "refunds"
+										},
+										{
+											"key": "id",
+											"value": "5"
+										},
+										{
+											"key": "language",
+											"value": "en"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
