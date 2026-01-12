@@ -47,8 +47,10 @@ func (r *FAQRepository) Create(faq *models.FAQ) error {
 		return err
 	}
 
-	query = `INSERT INTO translations(faq_id, language, question, answer)
-	VALUES ($1, $2, $3, $4)`
+	query = `
+	INSERT INTO translations(faq_id, language, question, answer)
+	VALUES ($1, $2, $3, $4)
+	RETURNING id`
 	args = []any{
 		faq.ID,
 		faq.Translations[0].Language,
@@ -71,7 +73,7 @@ func (r *FAQRepository) Create(faq *models.FAQ) error {
 // FindDefault Returns FAQ with its default Language
 func (r *FAQRepository) FindDefault(id int) (*models.FAQ, error) {
 	query := `
-	SELECT f.id, f.category, f.default_language, t.id, t.faq_id, t.language,
+	SELECT f.id, f.category, f.default_language, f.store_id, t.id, t.faq_id, t.language,
 	t.question, t.answer
 	FROM faqs AS f
 	JOIN translations AS t ON t.faq_id = f.id AND t.language = f.default_language
@@ -79,6 +81,7 @@ func (r *FAQRepository) FindDefault(id int) (*models.FAQ, error) {
 
 	var c models.FAQCategory
 	var t models.Translation
+	var storeID sql.NullInt32
 
 	faq := &models.FAQ{ID: id}
 
@@ -86,6 +89,7 @@ func (r *FAQRepository) FindDefault(id int) (*models.FAQ, error) {
 		&faq.ID,
 		&c.Name,
 		&faq.DefaultLanguage,
+		&storeID,
 		&t.ID,
 		&t.FAQID,
 		&t.Language,
@@ -104,19 +108,24 @@ func (r *FAQRepository) FindDefault(id int) (*models.FAQ, error) {
 	faq.Category = c
 	faq.Translations = append(faq.Translations, t)
 
+	if storeID.Valid {
+		faq.StoreID = int(storeID.Int32)
+	}
+
 	return faq, nil
 }
 
 // Find Returns FAQ with all available translations
 func (r *FAQRepository) Find(id int) (*models.FAQ, error) {
 	query := `
-	SELECT f.id, f.category, f.default_language, t.id, t.faq_id, t.language,
+	SELECT f.id, f.category, f.default_language, f.store_id, t.id, t.faq_id, t.language,
 	t.question, t.answer
 	FROM faqs AS f
 	JOIN translations AS t ON t.faq_id = f.id
 	WHERE f.id = $2`
 
 	faq := &models.FAQ{ID: id}
+	var storeID sql.NullInt32
 
 	rows, err := r.db.Query(query, id)
 	if err != nil {
@@ -131,6 +140,7 @@ func (r *FAQRepository) Find(id int) (*models.FAQ, error) {
 			&faq.ID,
 			&faq.Category.Name,
 			&faq.DefaultLanguage,
+			&storeID,
 			&t.ID,
 			&t.FAQID,
 			&t.Language,
@@ -142,6 +152,10 @@ func (r *FAQRepository) Find(id int) (*models.FAQ, error) {
 		}
 
 		faq.Translations = append(faq.Translations, t)
+	}
+
+	if storeID.Valid {
+		faq.StoreID = int(storeID.Int32)
 	}
 
 	return faq, nil

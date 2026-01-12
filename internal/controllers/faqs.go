@@ -13,6 +13,7 @@ import (
 )
 
 func (c *Controller) createGlobalFaqHandler(ctx *gin.Context) {
+	categoryName := ctx.Param("category")
 	user := ctx.MustGet(userContextKey).(*models.User)
 
 	var input createFaqInput
@@ -21,7 +22,7 @@ func (c *Controller) createGlobalFaqHandler(ctx *gin.Context) {
 		return
 	}
 
-	category, err := c.Services.FAQCategories.Find(input.Category)
+	category, err := c.Services.FAQCategories.Find(categoryName)
 	if err != nil {
 		switch {
 		case errors.Is(err, services.ErrCategoryNotFound):
@@ -49,6 +50,7 @@ func (c *Controller) createGlobalFaqHandler(ctx *gin.Context) {
 		default:
 			httputil.InternalServerError(ctx, err)
 		}
+		return
 	}
 
 	ctx.JSON(http.StatusCreated, createFaqResponse{
@@ -108,6 +110,7 @@ func (c *Controller) createStoreFaqHandler(ctx *gin.Context) {
 		default:
 			httputil.InternalServerError(ctx, err)
 		}
+		return
 	}
 
 	ctx.JSON(http.StatusCreated, createFaqResponse{
@@ -197,6 +200,7 @@ func (c *Controller) getStoreFaqsHandler(ctx *gin.Context) {
 }
 
 func (c *Controller) updateGlobalFaqHandler(ctx *gin.Context) {
+	categoryName := ctx.Param("category")
 	user := ctx.MustGet(userContextKey).(*models.User)
 	faqID, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
@@ -210,7 +214,7 @@ func (c *Controller) updateGlobalFaqHandler(ctx *gin.Context) {
 		return
 	}
 
-	category, err := c.Services.FAQCategories.Find(input.Category)
+	category, err := c.Services.FAQCategories.Find(categoryName)
 	if err != nil {
 		switch {
 		case errors.Is(err, services.ErrCategoryNotFound):
@@ -241,6 +245,7 @@ func (c *Controller) updateGlobalFaqHandler(ctx *gin.Context) {
 		default:
 			httputil.InternalServerError(ctx, err)
 		}
+		return
 	}
 
 	ctx.JSON(http.StatusOK, updateFaqResponse{
@@ -318,6 +323,7 @@ func (c *Controller) updateStoreFaqHandler(ctx *gin.Context) {
 		default:
 			httputil.InternalServerError(ctx, err)
 		}
+		return
 	}
 
 	ctx.JSON(http.StatusOK, updateFaqResponse{

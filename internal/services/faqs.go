@@ -30,10 +30,11 @@ func (s *FaqServices) CreateStoreFaq(input CreateStoreFaqInput) (*models.FAQ, er
 	}
 
 	faq := &models.FAQ{
-		Category:     *input.Category,
-		StoreID:      input.Store.ID,
-		IsGlobal:     false,
-		Translations: []models.Translation{translation},
+		Category:        *input.Category,
+		StoreID:         input.Store.ID,
+		IsGlobal:        false,
+		Translations:    []models.Translation{translation},
+		DefaultLanguage: models.Language(input.Language),
 	}
 
 	v := validator.New()
@@ -90,7 +91,7 @@ func (s *FaqServices) GetStoreFaqs(store *models.Store) ([]models.FAQ, error) {
 // MerchantUpdateFaq updates FAQ related to merchant's store.
 func (s *FaqServices) MerchantUpdateFaq(input MerchantUpdateFaqInput) (*models.FAQ, error) {
 	if input.Merchant.ID != input.Store.MerchantID {
-		return nil, ErrUnauthorized
+		return nil, fmt.Errorf("%w: user is not the owner of the store", ErrUnauthorized)
 	}
 
 	faq, err := s.repos.Faqs.FindDefault(input.FAQID)
@@ -103,8 +104,11 @@ func (s *FaqServices) MerchantUpdateFaq(input MerchantUpdateFaqInput) (*models.F
 		}
 	}
 
+	fmt.Printf("faq: %v\n", faq)
+	fmt.Printf("input.Store: %v\n", input.Store)
+
 	if input.Store.ID != faq.StoreID {
-		return nil, ErrUnauthorized
+		return nil, fmt.Errorf("%w: faq doesn't belong to the store", ErrUnauthorized)
 	}
 
 	faq.Translations[0].Question = input.Question
