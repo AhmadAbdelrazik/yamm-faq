@@ -4,6 +4,28 @@
 **Gin**, designed for multi-tenant FAQ management with native support for
 internationalization.
 
+## 📁 Project Structure
+
+The project follows a clean architecture pattern, separating concerns into distinct layers for maintainability and testability.
+
+```Plaintext
+.
+├── cmd/api                 # Application entry point & Swagger docs
+├── docker                  # Dockerfiles for API and Migrations
+├── docker-compose.yml      # Orchestration for API & PostgreSQL
+├── docs                    # Architecture & design documentation
+├── internal
+│   ├── config              # Environment and app configuration
+│   ├── controllers         # HTTP Handlers & Route definitions
+│   ├── httputil            # Common HTTP response helpers
+│   ├── models              # Domain entities (FAQ, User, Store, etc.)
+│   ├── repositories        # Database abstraction layer (SQL)
+│   └── services            # Business logic layer
+├── migrations              # SQL migration scripts
+├── pkg                     # Shared utilities (JWT, Validation)
+└── README.md
+```
+
 ## 🏗 Database Schema (ERD)
 
 ![ERD](./docs/erd-diagram.png)
