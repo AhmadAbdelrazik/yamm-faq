@@ -40,17 +40,20 @@ func (c *Controller) Routes(r *gin.Engine) {
 	auth.DELETE("/stores/:id/faqs/:faq-id", c.deleteStoreFaqHandler)
 
 	// Global FAQs Translations
-	// auth.POST("/faq-categories/:category/:id/translations")
-	// auth.GET("/faq-categories/:category/:id/translations")
-	// auth.GET("/faq-categories/:category/:id/:language")
-	// auth.PUT("/faq-categories/:category/:id/:language")
-	// auth.DELETE("/faq-categories/:category/:id/:langauge")
-	//
-	// auth.POST("/stores/:id/faqs/:faq-id/translations")
-	// auth.GET("/stores/:id/faqs/:faq-id/translations")
-	// auth.GET("/stores/:id/faqs/:faq-id/:language")
-	// auth.PUT("/stores/:id/faqs/:faq-id/:language")
-	// auth.DELETE("/stores/:id/faqs/:faq-id/:language")
+	api.GET("/faq-categories/:category/:id/translations", c.getGlobalFaqTranslationsHandler)
+	api.GET("/faq-categories/:category/:id/:language", c.getGlobalFaqLanguageHandler)
+
+	auth.POST("/faq-categories/:category/:id/translations", c.createGlobalFaqTranslationHandler)
+	auth.PUT("/faq-categories/:category/:id/:language", c.updateGlobalFaqLanguageHandler)
+	auth.DELETE("/faq-categories/:category/:id/:language", c.deleteGlobalFaqLanguageHandler)
+
+	// Store Specific FAQs Translations
+	api.GET("/stores/:id/faqs/:faq-id/translations", c.getStoreFaqTranslationsHandler)
+	api.GET("/stores/:id/faqs/:faq-id/:language", c.getStoreFaqLanguageHandler)
+
+	auth.POST("/stores/:id/faqs/:faq-id/translations", c.createStoreFaqTranslationHandler)
+	auth.PUT("/stores/:id/faqs/:faq-id/:language", c.updateStoreFaqLanguageHandler)
+	auth.DELETE("/stores/:id/faqs/:faq-id/:language", c.deleteStoreFaqLanguageHandler)
 
 	api.GET("/health", c.healthCheckHandler)
 }
