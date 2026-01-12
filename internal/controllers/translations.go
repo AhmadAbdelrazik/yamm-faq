@@ -12,17 +12,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary      Get all translations for a global FAQ
-// @Description  Retrieve every available language translation for a specific global FAQ
-// @Tags         Global FAQ Translations
-// @Produce      json
-// @Param        category  path      string  true  "Category Name"
-// @Param        id        path      int     true  "FAQ ID"
-// @Success      200       {object}  getFaqTranslationsResponse
-// @Failure      400       {object}  httputil.HTTPError
-// @Failure      404       {object}  httputil.HTTPError "Category or FAQ not found"
-// @Failure      500       {object}  httputil.HTTPError
-// @Router       /faq-categories/{category}/{id}/translations [get]
+// @Summary		Get all translations for a global FAQ
+// @Description	Retrieve every available language translation for a specific global FAQ
+// @Tags			Global FAQ Translations
+// @Produce		json
+// @Param			category	path		string	true	"Category Name"
+// @Param			id			path		int		true	"FAQ ID"
+// @Success		200			{object}	getFaqTranslationsResponse
+// @Failure		400			{object}	httputil.HTTPError
+// @Failure		404			{object}	httputil.HTTPError	"Category or FAQ not found"
+// @Failure		500			{object}	httputil.HTTPError
+// @Router			/faq-categories/{category}/{id}/translations [get]
 func (c *Controller) getGlobalFaqTranslationsHandler(ctx *gin.Context) {
 	categoryName := ctx.Param("category")
 	faqID, err := strconv.Atoi(ctx.Param("id"))
@@ -74,17 +74,17 @@ func (c *Controller) getGlobalFaqTranslationsHandler(ctx *gin.Context) {
 
 }
 
-// @Summary      Get global FAQ translation by language
-// @Description  Retrieve a specific language version of a global FAQ
-// @Tags         Global FAQ Translations
-// @Produce      json
-// @Param        category  path      string  true  "Category Name"
-// @Param        id        path      int     true  "FAQ ID"
-// @Param        language  path      string  true  "Language Code (e.g., 'en', 'ar')"
-// @Success      200       {object}  translationDTO
-// @Failure      404       {object}  httputil.HTTPError "Translation not found"
-// @Failure      422       {object}  httputil.HTTPError "Invalid language code"
-// @Router       /faq-categories/{category}/{id}/{language} [get]
+// @Summary		Get global FAQ translation by language
+// @Description	Retrieve a specific language version of a global FAQ
+// @Tags			Global FAQ Translations
+// @Produce		json
+// @Param			category	path		string	true	"Category Name"
+// @Param			id			path		int		true	"FAQ ID"
+// @Param			language	path		string	true	"Language Code (e.g., 'en', 'ar')"
+// @Success		200			{object}	translationDTO
+// @Failure		404			{object}	httputil.HTTPError	"Translation not found"
+// @Failure		422			{object}	httputil.HTTPError	"Invalid language code"
+// @Router			/faq-categories/{category}/{id}/{language} [get]
 func (c *Controller) getGlobalFaqLanguageHandler(ctx *gin.Context) {
 	faqID, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
@@ -116,20 +116,20 @@ func (c *Controller) getGlobalFaqLanguageHandler(ctx *gin.Context) {
 
 }
 
-// @Summary      Create global FAQ translation
-// @Description  Add a new language translation to an existing global FAQ (Admin only)
-// @Tags         Global FAQ Translations
-// @Accept       json
-// @Produce      json
-// @Security     ApiKeyAuth
-// @Param        category  path      string                  true  "Category Name"
-// @Param        id        path      int                     true  "FAQ ID"
-// @Param        input     body      createTranslationInput  true  "Translation Content"
-// @Success      201       {object}  createTranslationResponse
-// @Failure      403       {object}  httputil.HTTPError "Unauthorized"
-// @Failure      409       {object}  httputil.HTTPError "Translation already exists"
-// @Failure      422       {object}  httputil.HTTPError "Validation failed"
-// @Router       /faq-categories/{category}/{id}/translations [post]
+// @Summary		Create global FAQ translation
+// @Description	Add a new language translation to an existing global FAQ (Admin only)
+// @Tags			Global FAQ Translations
+// @Accept			json
+// @Produce		json
+// @Security		ApiKeyAuth
+// @Param			category	path		string					true	"Category Name"
+// @Param			id			path		int						true	"FAQ ID"
+// @Param			input		body		createTranslationInput	true	"Translation Content"
+// @Success		201			{object}	createTranslationResponse
+// @Failure		403			{object}	httputil.HTTPError	"Unauthorized"
+// @Failure		409			{object}	httputil.HTTPError	"Translation already exists"
+// @Failure		422			{object}	httputil.HTTPError	"Validation failed"
+// @Router			/faq-categories/{category}/{id}/translations [post]
 func (c *Controller) createGlobalFaqTranslationHandler(ctx *gin.Context) {
 	user := ctx.MustGet(userContextKey).(*models.User)
 	faqID, err := strconv.Atoi(ctx.Param("id"))
@@ -201,20 +201,20 @@ func (c *Controller) createGlobalFaqTranslationHandler(ctx *gin.Context) {
 	})
 }
 
-// @Summary      Update global FAQ translation
-// @Description  Modify an existing translation for a global FAQ (Admin only)
-// @Tags         Global FAQ Translations
-// @Accept       json
-// @Produce      json
-// @Security     ApiKeyAuth
-// @Param        category  path      string                  true  "Category Name"
-// @Param        id        path      int                     true  "FAQ ID"
-// @Param        language  path      string                  true  "Current Language"
-// @Param        input     body      updateTranslationInput  true  "Updated Content"
-// @Success      200       {object}  updateTranslationResponse
-// @Failure      404       {object}  httputil.HTTPError "Translation not found"
-// @Failure      409       {object}  httputil.HTTPError "Unauthorized or Conflict"
-// @Router       /faq-categories/{category}/{id}/{language} [put]
+// @Summary		Update global FAQ translation
+// @Description	Modify an existing translation for a global FAQ (Admin only)
+// @Tags			Global FAQ Translations
+// @Accept			json
+// @Produce		json
+// @Security		ApiKeyAuth
+// @Param			category	path		string					true	"Category Name"
+// @Param			id			path		int						true	"FAQ ID"
+// @Param			language	path		string					true	"Current Language"
+// @Param			input		body		updateTranslationInput	true	"Updated Content"
+// @Success		200			{object}	updateTranslationResponse
+// @Failure		404			{object}	httputil.HTTPError	"Translation not found"
+// @Failure		409			{object}	httputil.HTTPError	"Unauthorized or Conflict"
+// @Router			/faq-categories/{category}/{id}/{language} [put]
 func (c *Controller) updateGlobalFaqLanguageHandler(ctx *gin.Context) {
 	user := ctx.MustGet(userContextKey).(*models.User)
 	language := ctx.Param("language")
@@ -288,16 +288,16 @@ func (c *Controller) updateGlobalFaqLanguageHandler(ctx *gin.Context) {
 	})
 }
 
-// @Summary      Delete global FAQ translation
-// @Description  Remove a specific language translation (Cannot delete default language) (Admin only)
-// @Tags         Global FAQ Translations
-// @Security     ApiKeyAuth
-// @Param        category  path      string  true  "Category Name"
-// @Param        id        path      int     true  "FAQ ID"
-// @Param        language  path      string  true  "Language to Delete"
-// @Success      200       {object}  deleteTranslationResponse
-// @Failure      409       {object}  httputil.HTTPError "Cannot delete default language or Unauthorized"
-// @Router       /faq-categories/{category}/{id}/{language} [delete]
+// @Summary		Delete global FAQ translation
+// @Description	Remove a specific language translation (Cannot delete default language) (Admin only)
+// @Tags			Global FAQ Translations
+// @Security		ApiKeyAuth
+// @Param			category	path		string	true	"Category Name"
+// @Param			id			path		int		true	"FAQ ID"
+// @Param			language	path		string	true	"Language to Delete"
+// @Success		200			{object}	deleteTranslationResponse
+// @Failure		409			{object}	httputil.HTTPError	"Cannot delete default language or Unauthorized"
+// @Router			/faq-categories/{category}/{id}/{language} [delete]
 func (c *Controller) deleteGlobalFaqLanguageHandler(ctx *gin.Context) {
 	user := ctx.MustGet(userContextKey).(*models.User)
 	language := ctx.Param("language")
@@ -354,15 +354,15 @@ func (c *Controller) deleteGlobalFaqLanguageHandler(ctx *gin.Context) {
 	})
 }
 
-// @Summary      Get all translations for a store FAQ
-// @Description  Retrieve every available language translation for a specific store's FAQ
-// @Tags         Store FAQ Translations
-// @Produce      json
-// @Param        id      path      int  true  "Store ID"
-// @Param        faq-id  path      int  true  "FAQ ID"
-// @Success      200     {object}  getFaqTranslationsResponse
-// @Failure      404     {object}  httputil.HTTPError "Store or FAQ not found"
-// @Router       /stores/{id}/faqs/{faq-id}/translations [get]
+// @Summary		Get all translations for a store FAQ
+// @Description	Retrieve every available language translation for a specific store's FAQ
+// @Tags			Store FAQ Translations
+// @Produce		json
+// @Param			id		path		int	true	"Store ID"
+// @Param			faq-id	path		int	true	"FAQ ID"
+// @Success		200		{object}	getFaqTranslationsResponse
+// @Failure		404		{object}	httputil.HTTPError	"Store or FAQ not found"
+// @Router			/stores/{id}/faqs/{faq-id}/translations [get]
 func (c *Controller) getStoreFaqTranslationsHandler(ctx *gin.Context) {
 	faqID, err := strconv.Atoi(ctx.Param("faq-id"))
 	if err != nil {
@@ -417,15 +417,15 @@ func (c *Controller) getStoreFaqTranslationsHandler(ctx *gin.Context) {
 	})
 }
 
-// @Summary      Get store FAQ translation by language
-// @Description  Retrieve a specific language version of a store-specific FAQ
-// @Tags         Store FAQ Translations
-// @Produce      json
-// @Param        id        path      int     true  "Store ID"
-// @Param        faq-id    path      int     true  "FAQ ID"
-// @Param        language  path      string  true  "Language Code"
-// @Success      200       {object}  translationDTO
-// @Router       /stores/{id}/faqs/{faq-id}/{language} [get]
+// @Summary		Get store FAQ translation by language
+// @Description	Retrieve a specific language version of a store-specific FAQ
+// @Tags			Store FAQ Translations
+// @Produce		json
+// @Param			id			path		int		true	"Store ID"
+// @Param			faq-id		path		int		true	"FAQ ID"
+// @Param			language	path		string	true	"Language Code"
+// @Success		200			{object}	translationDTO
+// @Router			/stores/{id}/faqs/{faq-id}/{language} [get]
 func (c *Controller) getStoreFaqLanguageHandler(ctx *gin.Context) {
 	faqID, err := strconv.Atoi(ctx.Param("faq-id"))
 	if err != nil {
@@ -456,18 +456,18 @@ func (c *Controller) getStoreFaqLanguageHandler(ctx *gin.Context) {
 	})
 }
 
-// @Summary      Create store FAQ translation
-// @Description  Add a new language translation to an existing store FAQ (Merchant only)
-// @Tags         Store FAQ Translations
-// @Accept       json
-// @Produce      json
-// @Security     ApiKeyAuth
-// @Param        id      path      int                     true  "Store ID"
-// @Param        faq-id  path      int                     true  "FAQ ID"
-// @Param        input   body      createTranslationInput  true  "Translation Content"
-// @Success      201     {object}  createTranslationResponse
-// @Failure      409     {object}  httputil.HTTPError "Already exists or Unauthorized"
-// @Router       /stores/{id}/faqs/{faq-id}/translations [post]
+// @Summary		Create store FAQ translation
+// @Description	Add a new language translation to an existing store FAQ (Merchant only)
+// @Tags			Store FAQ Translations
+// @Accept			json
+// @Produce		json
+// @Security		ApiKeyAuth
+// @Param			id		path		int						true	"Store ID"
+// @Param			faq-id	path		int						true	"FAQ ID"
+// @Param			input	body		createTranslationInput	true	"Translation Content"
+// @Success		201		{object}	createTranslationResponse
+// @Failure		409		{object}	httputil.HTTPError	"Already exists or Unauthorized"
+// @Router			/stores/{id}/faqs/{faq-id}/translations [post]
 func (c *Controller) createStoreFaqTranslationHandler(ctx *gin.Context) {
 	user := ctx.MustGet(userContextKey).(*models.User)
 	storeID, err := strconv.Atoi(ctx.Param("id"))
@@ -544,18 +544,18 @@ func (c *Controller) createStoreFaqTranslationHandler(ctx *gin.Context) {
 	})
 }
 
-// @Summary      Update store FAQ translation
-// @Description  Modify an existing translation for a store FAQ (Merchant only)
-// @Tags         Store FAQ Translations
-// @Accept       json
-// @Produce      json
-// @Security     ApiKeyAuth
-// @Param        id        path      int                     true  "Store ID"
-// @Param        faq-id    path      int                     true  "FAQ ID"
-// @Param        language  path      string                  true  "Current Language"
-// @Param        input     body      updateTranslationInput  true  "Updated Content"
-// @Success      200       {object}  updateTranslationResponse
-// @Router       /stores/{id}/faqs/{faq-id}/{language} [put]
+// @Summary		Update store FAQ translation
+// @Description	Modify an existing translation for a store FAQ (Merchant only)
+// @Tags			Store FAQ Translations
+// @Accept			json
+// @Produce		json
+// @Security		ApiKeyAuth
+// @Param			id			path		int						true	"Store ID"
+// @Param			faq-id		path		int						true	"FAQ ID"
+// @Param			language	path		string					true	"Current Language"
+// @Param			input		body		updateTranslationInput	true	"Updated Content"
+// @Success		200			{object}	updateTranslationResponse
+// @Router			/stores/{id}/faqs/{faq-id}/{language} [put]
 func (c *Controller) updateStoreFaqLanguageHandler(ctx *gin.Context) {
 	user := ctx.MustGet(userContextKey).(*models.User)
 	language := ctx.Param("language")
@@ -634,16 +634,16 @@ func (c *Controller) updateStoreFaqLanguageHandler(ctx *gin.Context) {
 	})
 }
 
-// @Summary      Delete store FAQ translation
-// @Description  Remove a translation from a store FAQ (Merchant only)
-// @Tags         Store FAQ Translations
-// @Security     ApiKeyAuth
-// @Param        id        path      int     true  "Store ID"
-// @Param        faq-id    path      int     true  "FAQ ID"
-// @Param        language  path      string  true  "Language to Delete"
-// @Success      200       {object}  deleteTranslationResponse
-// @Failure      409       {object}  httputil.HTTPError "Cannot delete default language"
-// @Router       /stores/{id}/faqs/{faq-id}/{language} [delete]
+// @Summary		Delete store FAQ translation
+// @Description	Remove a translation from a store FAQ (Merchant only)
+// @Tags			Store FAQ Translations
+// @Security		ApiKeyAuth
+// @Param			id			path		int		true	"Store ID"
+// @Param			faq-id		path		int		true	"FAQ ID"
+// @Param			language	path		string	true	"Language to Delete"
+// @Success		200			{object}	deleteTranslationResponse
+// @Failure		409			{object}	httputil.HTTPError	"Cannot delete default language"
+// @Router			/stores/{id}/faqs/{faq-id}/{language} [delete]
 func (c *Controller) deleteStoreFaqLanguageHandler(ctx *gin.Context) {
 	user := ctx.MustGet(userContextKey).(*models.User)
 	language := ctx.Param("language")

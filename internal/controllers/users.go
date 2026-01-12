@@ -11,17 +11,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary Signup a new customer
-// @Description Create a new customer account and return a session cookie
-// @Tags Authentication
-// @Accept json
-// @Produce json
-// @Param request body signupCustomerInput true "Customer Signup Details"
-// @Success 201 {object} customerSignupResponse
-// @Failure 400 {object} httputil.HTTPError
-// @Failure 409 {object} httputil.HTTPError
-// @Failure 500 {object} httputil.HTTPError
-// @Router /signup/customer [post]
+// @Summary		Signup a new customer
+// @Description	Create a new customer account and return a session cookie
+// @Tags			Authentication
+// @Accept			json
+// @Produce		json
+// @Param			request	body		signupCustomerInput	true	"Customer Signup Details"
+// @Success		201		{object}	customerSignupResponse
+// @Failure		400		{object}	httputil.HTTPError
+// @Failure		409		{object}	httputil.HTTPError
+// @Failure		500		{object}	httputil.HTTPError
+// @Router			/signup/customer [post]
 func (c *Controller) signupCustomerHandler(ctx *gin.Context) {
 	var input signupCustomerInput
 
@@ -51,17 +51,17 @@ func (c *Controller) signupCustomerHandler(ctx *gin.Context) {
 	})
 }
 
-// @Summary Signup a new merchant
-// @Description Create a new merchant account along with a store and return a session cookie
-// @Tags Authentication
-// @Accept json
-// @Produce json
-// @Param request body signupMerchantInput true "Merchant Signup Details"
-// @Success 201 {object} merchantSignupResponse
-// @Failure 400 {object} httputil.HTTPError
-// @Failure 409 {object} httputil.HTTPError
-// @Failure 500 {object} httputil.HTTPError
-// @Router /signup/merchant [post]
+// @Summary		Signup a new merchant
+// @Description	Create a new merchant account along with a store and return a session cookie
+// @Tags			Authentication
+// @Accept			json
+// @Produce		json
+// @Param			request	body		signupMerchantInput	true	"Merchant Signup Details"
+// @Success		201		{object}	merchantSignupResponse
+// @Failure		400		{object}	httputil.HTTPError
+// @Failure		409		{object}	httputil.HTTPError
+// @Failure		500		{object}	httputil.HTTPError
+// @Router			/signup/merchant [post]
 func (c *Controller) signupMerchantHandler(ctx *gin.Context) {
 	var input signupMerchantInput
 
@@ -93,17 +93,17 @@ func (c *Controller) signupMerchantHandler(ctx *gin.Context) {
 	})
 }
 
-// @Summary Login user
-// @Description Authenticate user and return a session cookie
-// @Tags Authentication
-// @Accept json
-// @Produce json
-// @Param request body loginInput true "Login Credentials"
-// @Success 200 {object} loginResponse
-// @Failure 400 {object} httputil.HTTPError
-// @Failure 403 {object} httputil.HTTPError
-// @Failure 500 {object} httputil.HTTPError
-// @Router /login [post]
+// @Summary		Login user
+// @Description	Authenticate user and return a session cookie
+// @Tags			Authentication
+// @Accept			json
+// @Produce		json
+// @Param			request	body		loginInput	true	"Login Credentials"
+// @Success		200		{object}	loginResponse
+// @Failure		400		{object}	httputil.HTTPError
+// @Failure		403		{object}	httputil.HTTPError
+// @Failure		500		{object}	httputil.HTTPError
+// @Router			/login [post]
 func (c *Controller) loginHandler(ctx *gin.Context) {
 	var input loginInput
 

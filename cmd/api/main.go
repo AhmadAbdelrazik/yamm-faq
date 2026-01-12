@@ -13,20 +13,22 @@ import (
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "github.com/AhmadAbdelrazik/yamm_faq/cmd/api/docs"
 )
 
-// @title           FAQ API
-// @version         1.0
-// @description     FAQ Management System
+//	@title			FAQ API
+//	@version		1.0
+//	@description	FAQ Management System
 
-// @contact.name   Ahmad Abdelrazik
-// @contact.email  ahmad.abdelrazik.swe@gmail.com
+//	@contact.name	Ahmad Abdelrazik
+//	@contact.email	ahmad.abdelrazik.swe@gmail.com
 
-// @license.name  MIT
-// @license.url   https://opensource.org/licenses/MIT
+//	@license.name	MIT
+//	@license.url	https://opensource.org/licenses/MIT
 
-// @host      localhost:8080
-// @BasePath  /api/v1
+// @host		localhost:8080
+// @BasePath	/api/v1
 func main() {
 	cfg := config.Load()
 
