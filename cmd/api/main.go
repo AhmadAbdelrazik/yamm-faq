@@ -1,52 +1,48 @@
 package main
 
 import (
-	"log"
 	"log/slog"
 	"os"
 
+	"github.com/AhmadAbdelrazik/yamm_faq/internal/config"
 	"github.com/AhmadAbdelrazik/yamm_faq/internal/controllers"
 	"github.com/AhmadAbdelrazik/yamm_faq/internal/repositories"
 	"github.com/AhmadAbdelrazik/yamm_faq/internal/services"
 	"github.com/AhmadAbdelrazik/yamm_faq/pkg/jwt"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	// load .env
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("failed to load .env file")
-		os.Exit(1)
-	}
+	cfg := config.Load()
 
-	setupSlog()
+	setupSlog(cfg.Environment)
 
-	repos, err := repositories.New(os.Getenv("DB_DSN"))
+	repos, err := repositories.New(cfg.DSN)
 	if err != nil {
 		slog.Error(err.Error())
 		os.Exit(1)
 	}
 
-	jwtService := jwt.New(os.Getenv("JWT_KEY"))
+	jwtService := jwt.New(cfg.JwtKey)
 	services := services.New(repos)
 
 	controller := controllers.New(services, jwtService)
 
 	r := gin.Default()
+	r.SetTrustedProxies(nil)
 
 	controller.Routes(r)
 
-	if err := r.Run(); err != nil {
+	if err := r.Run(cfg.Port); err != nil {
 		slog.Error(err.Error())
 	}
 }
 
 // setupSlog setup the slog library provided by Go standard library for
 // structured logging
-func setupSlog() {
+func setupSlog(environment string) {
 	loggerOpts := &slog.HandlerOptions{}
-	if os.Getenv("ENVIRONMENT") == "DEVELOPMENT" || os.Getenv("ENVIRONMENT") == "TESTING" {
+	if environment == "DEVELOPMENT" || environment == "TESTING" {
 		loggerOpts.Level = slog.LevelDebug
 	} else {
 		loggerOpts.Level = slog.LevelInfo
