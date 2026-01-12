@@ -122,7 +122,7 @@ func (r *FAQRepository) Find(id int) (*models.FAQ, error) {
 	t.question, t.answer
 	FROM faqs AS f
 	JOIN translations AS t ON t.faq_id = f.id
-	WHERE f.id = $2`
+	WHERE f.id = $1`
 
 	faq := &models.FAQ{ID: id}
 	var storeID sql.NullInt32

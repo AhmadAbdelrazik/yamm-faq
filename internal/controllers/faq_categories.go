@@ -65,23 +65,6 @@ func (c *Controller) getAllFaqCategoryHandler(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, getAllFaqCategoryResponse{dto})
 }
 
-func (c *Controller) getFaqCategoryHandler(ctx *gin.Context) {
-	categoryName := ctx.Param("category")
-
-	category, err := c.Services.FAQCategories.Find(categoryName)
-	if err != nil {
-		switch {
-		case errors.Is(err, services.ErrCategoryNotFound):
-			httputil.NotFound(ctx, err)
-		default:
-			httputil.InternalServerError(ctx, err)
-		}
-		return
-	}
-
-	ctx.JSON(http.StatusOK, faqCategoryDTO(*category))
-}
-
 func (c *Controller) updateFaqCategoryHandler(ctx *gin.Context) {
 	user := ctx.MustGet(userContextKey).(*models.User)
 

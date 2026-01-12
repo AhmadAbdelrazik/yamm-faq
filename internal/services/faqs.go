@@ -49,6 +49,44 @@ func (s *FaqServices) CreateStoreFaq(input CreateStoreFaqInput) (*models.FAQ, er
 	return faq, nil
 }
 
+// FindFAQInCategory Finds FAQ with all its available translations in a category
+func (s *FaqServices) FindFAQInCategory(faqID int, category *models.FAQCategory) (*models.FAQ, error) {
+	faq, err := s.repos.Faqs.Find(faqID)
+	if err != nil {
+		switch {
+		case errors.Is(err, repositories.ErrNotFound):
+			return nil, ErrFaqNotFound
+		default:
+			return nil, fmt.Errorf("Find FAQ Fail: %w", err)
+		}
+	}
+
+	if faq.Category.Name != category.Name {
+		return nil, ErrFaqNotFound
+	}
+
+	return faq, nil
+}
+
+// FindFAQInStore Finds FAQ with all its available translations in a store
+func (s *FaqServices) FindFAQInStore(faqID int, store *models.Store) (*models.FAQ, error) {
+	faq, err := s.repos.Faqs.Find(faqID)
+	if err != nil {
+		switch {
+		case errors.Is(err, repositories.ErrNotFound):
+			return nil, ErrFaqNotFound
+		default:
+			return nil, fmt.Errorf("Find FAQ Fail: %w", err)
+		}
+	}
+
+	if faq.StoreID != store.ID {
+		return nil, ErrFaqNotFound
+	}
+
+	return faq, nil
+}
+
 // CreateGlobalFaq Creates a new global FAQ
 func (s *FaqServices) CreateGlobalFaq(input CreateGlobalFaqInput) (*models.FAQ, error) {
 	if !input.User.IsAdmin() {
